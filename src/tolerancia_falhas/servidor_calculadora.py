@@ -31,10 +31,10 @@ def servidor(host = 'localhost', port=8032):
                 try:
                     while True:
                         data = client.recv(data_payload)
-                        print(data)
+   
+                        retorno = efetua_calculo(data)
 
-                        retorno = encontra_operador(data)
-                        if retorno:
+                        if ((retorno) & (str(retorno).isnumeric())):
                             retorno = str(retorno).encode()
                             client.sendall(retorno)
                         else:
@@ -43,30 +43,13 @@ def servidor(host = 'localhost', port=8032):
                     print(f'Conexao Finalizada com {address}')
 
 
-def calcula(num1, num2, operacao):
-    num1 = int(num1)
-    num2 = int(num2)
-    if operacao == '+':
-        return num1 + num2
-    elif operacao == '-':
-        return num1 - num2
-    elif operacao == '/':
-        return num1 / num2
-    elif operacao == '*':
-        return num1 * num2
 
-
-def encontra_operador(data):
+def efetua_calculo(data):
     data = data.decode('utf-8').strip()
-    array_resultados = [data.find('+'), data.find('-'), data.find('*'), data.find('/')]
-    posicao = max(array_resultados)
+    return eval(data)
 
-    if posicao > 0:
-        return calcula(data[:posicao], data[posicao+1:], data[posicao: posicao+1])
-    else:
-        return None
 
 
 
 if __name__ == '__main__':
-    servidor()
+    servidor(port=int(input('Digite a Porta: ')))
