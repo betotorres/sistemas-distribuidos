@@ -85,3 +85,6 @@ def get_user(cpf):
 
     return query_db("select * from contas where cpf = '?", cpf)
 
+
+if __name__ == '__main__':
+    app.run(debug=False, port=8001)
